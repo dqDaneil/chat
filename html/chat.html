@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daneil 的聊天室</title>
+    <style>
+        .content{
+            width: 700px;
+            margin: auto;
+        }
+        .box{
+            padding-bottom: 3px;
+            padding-top: 3px;
+        }
+        .box input{
+            width: 70%;
+        }
+        .box button{
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="box">
+        <input type="text" name="name">
+        <button id="setName">设置昵称</button>
+    </div>
+    <div class="box">
+        <input type="text" name="message">
+        <button id="send">发送</button>
+    </div>
+    <div id="content" class="box"></div>
+</div>
+</body>
+<script src="../public/static/js/jquery-1.11.3.min.js"></script>
+<script>
+    var ws;
+    var connected = false;
+    $(function () {
+
+        $("#setName").click(function () {
+            var name = $('input[name=name]').val().trim();
+            if (name==''){
+                alert('昵称不能为空');
+                return;
+            }
+            sendData('setName',{name:name});
+        });
+
+        $("#send").click(function () {
+            var message = $('input[name=message]').val().trim();
+            if (message==''){
+                alert('内容不能为空');
+                return;
+            }
+            sendData('message',{message:message});
+        })
+
+        ws = new WebSocket("ws://daneil.live.com:2346");
+        ws.onopen = function() {
+            console.log('WebSocket 连接成功');
+            connected = true;
+        };
+        ws.onmessage = function(e) {
+            // e.data
+            try {
+                var data = JSON.parse(e.data);
+                //非法数据，不处理
+                if (!data.hasOwnProperty("code")) return;
+                if (data.code != 0){
+                    if (data.hasOwnProperty("msg")){
+                        alert(data.msg);
+                    }
+                    return
+                }
+
+                if (!data.hasOwnProperty("data") || !data.hasOwnProperty("type") || !data.hasOwnProperty("data")) return;
+
+                switch (data.type){
+                    case 'message':
+                        addChatItem(data.data.name,data.data.message)
+                        break;
+                    case 'msg':
+                        alert(data.data.msg)
+                        break;
+                }
+
+            }catch (ex) {
+
+            }
+        };
+
+    });
+
+    function addChatItem( name,message ) {
+        var temp = '<div class="box"><p>__NAME__ 说：</p><p>__CONTENT__</p></div>';
+        temp = temp.replace( "__NAME__",name );
+        temp = temp.replace( "__CONTENT__",message );
+        $("#content").append(temp);
+    }
+
+    function sendData(type,data) {
+        if(ws.readyState != 1){
+            alert(connected ? "连接已中断" : "连接不成功");
+            return;
+        }
+        ws.send(JSON.stringify({type:type,data:data}));
+    }
+
+</script>
+
+</html>

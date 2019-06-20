@@ -1,0 +1,22 @@
+2019-06-20 11:50:53 pid:1 think\exception\ErrorException: Undefined offset: 1 in F:\NWork\live\application\push\controller\Worker.php:102
+Stack trace:
+#0 F:\NWork\live\application\push\controller\Worker.php(102): think\Error::appError(8, 'Undefined offse...', 'F:\\NWork\\live\\a...', 102, Array)
+#1 F:\NWork\live\application\push\controller\Worker.php(55): app\push\controller\Worker->setName(1, '\xE5\x8C\xBF\xE5\x90\x8D3473')
+#2 [internal function]: app\push\controller\Worker->onConnect(Object(Workerman\Connection\TcpConnection))
+#3 F:\NWork\live\vendor\workerman\workerman\Worker.php(2424): call_user_func(Array, Object(Workerman\Connection\TcpConnection))
+#4 [internal function]: Workerman\Worker->acceptConnection(Resource id #39)
+#5 F:\NWork\live\vendor\workerman\workerman\Events\Select.php(294): call_user_func_array(Array, Array)
+#6 F:\NWork\live\vendor\workerman\workerman\Worker.php(2357): Workerman\Events\Select->loop()
+#7 F:\NWork\live\vendor\workerman\workerman\Worker.php(1351): Workerman\Worker->run()
+#8 F:\NWork\live\vendor\workerman\workerman\Worker.php(1294): Workerman\Worker::forkWorkersForWindows()
+#9 F:\NWork\live\vendor\workerman\workerman\Worker.php(509): Workerman\Worker::forkWorkers()
+#10 F:\NWork\live\vendor\topthink\think-worker\src\Server.php(56): Workerman\Worker::runAll()
+#11 [internal function]: think\worker\Server->start()
+#12 F:\NWork\live\thinkphp\library\think\App.php(343): ReflectionMethod->invokeArgs(Object(app\push\controller\Worker), Array)
+#13 F:\NWork\live\thinkphp\library\think\App.php(611): think\App::invokeMethod(Array, Array)
+#14 F:\NWork\live\thinkphp\library\think\App.php(456): think\App::module(Array, Array, true)
+#15 F:\NWork\live\thinkphp\library\think\App.php(139): think\App::exec(Array, Array)
+#16 F:\NWork\live\thinkphp\start.php(19): think\App::run()
+#17 F:\NWork\live\server.php(12): require('F:\\NWork\\live\\t...')
+#18 {main}
+2019-06-20 11:50:53 pid:1 Worker process terminated
